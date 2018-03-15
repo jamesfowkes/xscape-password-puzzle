@@ -73,11 +73,7 @@ var fsm = new StateMachine({
 
 function fireEvent(event)
 {
-  if (event=="correctPassword")
-  {
-    fsm.correctPassword();
-  }
-  else if (event=="incorrectPassword")
+  if (event=="incorrectPassword")
   {
     fsm.incorrectPassword();
   }
@@ -99,10 +95,13 @@ function fireEvent(event)
   }
 }
 
+function onPasswordKeypress(event){
+  if ($("#password").val() == "aaa") {
+    fsm.correctPassword();
+  }
+}
+
 $(document).ready()
 {
-  $("a.eventSource").on("click", function(event) {
-    alert(event.target.id);
-    fireEvent(event.target.id);
-  });
+  $("#password").on("keyup", onPasswordKeypress);
 }

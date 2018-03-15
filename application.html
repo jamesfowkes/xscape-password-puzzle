@@ -3,27 +3,27 @@
 <head>
     <script src="jquery-3.3.1.min.js"></script>
     <script src='state-machine.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <p>
-        <a href="" target="_blank" id="correctPassword" class="eventSource">Correct Password</a>
-    </p>
-    <p>
-        <a href="" target="_blank" id="incorrectPassword" class="eventSource">Incorrect Password</a>
-    </p>
-    <p>
-        <a href="" target="_blank" id="forgotPassword" class="eventSource">Forgot Password</a>
-    </p>
-    <p>
-        <a href="" target="_blank" id="keypress" class="eventSource">Keypress</a>
-    </p>
-    <p>
-        <a href="" target="_blank" id="correctPassphrase" class="eventSource">Correct Passphrase</a>
-    </p>
-    <p>
-        <a href="" target="_blank" id="incorrectPassphrase" class="eventSource">Incorrect Passphrase</a>
-    </p>
+    <div class="d-flex align-items-center flex-column justify-content-center h-100">
+        <form>
+            <div class="form-group row">
+                <label for="id" class="col-sm-3 col-form-label">ID: </label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="id" value="security@bigbank.co.uk" disabled="true"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="password" class="col-sm-3 col-form-label">Password: </label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="password" type="password"/>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <script src='password-puzzle.js'></script>
 </body>
