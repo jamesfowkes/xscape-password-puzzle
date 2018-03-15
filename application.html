@@ -9,22 +9,35 @@
 
 <body>
     <div class="d-flex align-items-center flex-column justify-content-center h-100">
+        <h1 id="heading">Enter Password</h1>
         <form>
-            <div class="form-group row">
+            <div class="form-group row" id="idcontrols">
                 <label for="id" class="col-sm-3 col-form-label">ID: </label>
                 <div class="col-sm-9">
                     <input class="form-control" id="id" value="security@bigbank.co.uk" disabled="true"/>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" id="passwordcontrols">
                 <label for="password" class="col-sm-3 col-form-label">Password: </label>
                 <div class="col-sm-9">
                     <input class="form-control" id="password" type="password"/>
                 </div>
             </div>
+            <div class="form-group row" id="questioncontrols">
+                <label id="questionlabel" for="question" class="col-sm-6 col-form-label">SECURITY QUESTION: </label>
+                <div class="col-sm-6">
+                    <input class="form-control" id="question" type="text"/>
+                </div>
+            </div>
         </form>
-    </div>
-
+        <span id="incorrectPasswordAlert">INCORRECT PASSWORD</span>
+        <div class="force-to-bottom-right" id="forgotPasswordPrompt">
+            <a href="" target="_blank">Forgot Password?</a>
+        </div>
+        <video id="video">
+            VIDEO
+        </video>
+    </div>  
     <script src='password-puzzle.js'></script>
 </body>
 

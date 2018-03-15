@@ -1,3 +1,10 @@
 body,html {
 	height: 100%
 }
+
+.force-to-bottom-right {
+  position:absolute;
+  text-align:right;
+  bottom: 0px;
+  width: 100%;
+}
