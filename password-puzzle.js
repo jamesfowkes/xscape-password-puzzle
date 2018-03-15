@@ -10,42 +10,37 @@ function handleEnterScreen1(lifecycle)
 
 function handleEnterScreen2(lifecycle)
 {
-  $("#correctPassword").show();
-  $("#incorrectPassword").show();
-  $("#forgotPassword").show();
-  $("#keypress").show();
+  $("#correctPassword").hide();
+  $("#incorrectPassword").hide();
+  $("#forgotPassword").hide();
+  $("#keypress").hide();
   $("#correctPassphrase").show();
   $("#incorrectPassphrase").show();
 }
 
 function handleEnterScreen3(lifecycle)
 {
-  $("#correctPassword").show();
-  $("#incorrectPassword").show();
-  $("#forgotPassword").show();
-  $("#keypress").show();
+  $("#correctPassword").hide();
+  $("#incorrectPassword").hide();
+  $("#forgotPassword").hide();
+  $("#keypress").hide();
   $("#correctPassphrase").show();
   $("#incorrectPassphrase").show();
 }
 
 function onEnterVideo(lifecycle)
 {
-  $("#correctPassword").show();
-  $("#incorrectPassword").show();
-  $("#forgotPassword").show();
-  $("#keypress").show();
-  $("#correctPassphrase").show();
-  $("#incorrectPassphrase").show();
+  $("#correctPassword").hide();
+  $("#incorrectPassword").hide();
+  $("#forgotPassword").hide();
+  $("#keypress").hide();
+  $("#correctPassphrase").hide();
+  $("#incorrectPassphrase").hide();
 }
 
 function onEnterExit(lifecycle)
 {
-  $("#correctPassword").show();
-  $("#incorrectPassword").show();
-  $("#forgotPassword").show();
-  $("#keypress").show();
-  $("#correctPassphrase").show();
-  $("#incorrectPassphrase").show();
+  window.close();
 }
 
 
@@ -102,4 +97,12 @@ function fireEvent(event)
   {
     fsm.incorrectPassphrase();
   }
+}
+
+$(document).ready()
+{
+  $("a.eventSource").on("click", function(event) {
+    alert(event.target.id);
+    fireEvent(event.target.id);
+  });
 }

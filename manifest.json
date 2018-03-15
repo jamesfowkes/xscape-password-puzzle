@@ -1,0 +1,15 @@
+{
+  "name": "scape Password Puzzle",
+  "version": "1.0",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js", "jquery-3.3.1.min.js", "state-machine.min.js", "password-puzzle.js"],
+      "persistent": false
+    }
+  },
+  "permissions": [
+    "webview"
+  ],
+  "kiosk_enabled": true
+}
