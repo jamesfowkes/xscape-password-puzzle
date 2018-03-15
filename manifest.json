@@ -1,5 +1,5 @@
 {
-  "name": "scape Password Puzzle",
+  "name": "Xscape Password Puzzle",
   "version": "1.0",
   "manifest_version": 2,
   "app": {
@@ -9,7 +9,8 @@
     }
   },
   "permissions": [
-    "webview"
+    "fullscreen"
   ],
-  "kiosk_enabled": true
+  "kiosk_enabled": true,
+  "offline_enabled": true
 }
