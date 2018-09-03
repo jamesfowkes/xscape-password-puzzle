@@ -19,8 +19,17 @@ var VIDEO_FILE = "video.mkv"
 /* DO NOT CHANGE ANYTHING BELOW THIS LINE!**/
 /*******************************************/
 
-
 var incorrectPasswordCount = 0;
+var expected_answer1;
+var expected_answer2;
+
+function showStartup(show) {
+  if (show===true) {
+    $(".select-room").show();
+  } else {
+    $(".select-room").hide();
+  }
+}
 
 function showHeading(text) {
   if (text === false) {
@@ -73,8 +82,20 @@ function showForgotPasswordLink(show) {
   }
 }
 
+function handleEnterStartup(lifecycle)
+{
+  showVideo(false);
+  showHeading(false);
+  showQuestion(false);
+  showPasswordInput(false, false);
+  showStartup(true);
+  $("#incorrectPasswordAlert").hide();
+  showForgotPasswordLink(false);
+}
+
 function handleEnterScreen1(lifecycle)
 {
+  showStartup(false);
   showVideo(false);
   showHeading("Enter Password")
   showQuestion(false)
@@ -137,7 +158,9 @@ function onEnterExit(lifecycle)
 var fsm = new StateMachine({
   init: 'documentLoading',
   transitions: [
-    { name: 'loaded', from: 'documentLoading', to: 'screen1'},
+    { name: 'loaded', from: 'documentLoading', to: 'startup'},
+
+    { name: 'roomSelected', from: 'startup', to: 'screen1'},
 
     { name: 'correctPassword', from: 'screen1',  to: 'exit' },
     { name: 'incorrectPassword', from: 'screen1',  to: 'screen1Disabled' },
@@ -158,6 +181,7 @@ var fsm = new StateMachine({
 
   ],
   methods: {
+    onEnterStartup: handleEnterStartup,
     onEnterScreen1: handleEnterScreen1,
     onEnterScreen1Disabled: handleEnterScreen1Disabled,
     onEnterScreen2: handleEnterScreen2,
@@ -166,6 +190,11 @@ var fsm = new StateMachine({
     onEnterExit: onEnterExit
   }
 });
+
+function caseInsensitiveCompare(p1, p2)
+{
+  return p1.toUpperCase() === p2.toUpperCase();
+}
 
 function fireFSMTimeout()
 {
@@ -179,18 +208,18 @@ function onPasswordKeypress(event) {
     fsm.correctPassword();
   }
 
-  if (password.length >= PASSWORD_LENGTH) {
+  if ((password.length >= PASSWORD_LENGTH) || event.keyCode == 13) {
     incorrectPasswordCount++;
     fsm.incorrectPassword();
     setTimeout(fireFSMTimeout, INCORRECT_PASSWORD_TIMEOUT);
   }
 }
 
-function handleQuestionAnswer(answer) {
-  if (fsm.is("screen2") && answer == ANSWER1) {
+function handleQuestionAnswer(entered_answer) {
+  if (fsm.is("screen2") && caseInsensitiveCompare(entered_answer, expected_answer1)) {
     fsm.correctPassphrase();
   }
-  else if (fsm.is("screen3") && answer == ANSWER2) {
+  else if (fsm.is("screen3") && caseInsensitiveCompare(entered_answer, expected_answer2)) {
     fsm.correctPassphrase();
     setTimeout(fireFSMTimeout, VIDEO_LOOP_TIME);
   }
@@ -206,7 +235,20 @@ function onQuestionKeypress(event) {
 }
 
 function onForgotPasswordClick(event) {
+  event.preventDefault();
   fsm.forgotPassword();
+}
+
+function onRoom1Selected(event) {
+  expected_answer1 = ROOM1_ANSWER1;
+  expected_answer2 = ROOM1_ANSWER2;
+  fsm.roomSelected();
+}
+
+function onRoom2Selected(event) {
+  expected_answer1 = ROOM2_ANSWER1;
+  expected_answer2 = ROOM2_ANSWER2;
+  fsm.roomSelected();
 }
 
 $(document).ready( function() {
@@ -214,6 +256,12 @@ $(document).ready( function() {
   $("#question").on("keyup", onQuestionKeypress);
   $("#forgotPasswordPrompt").on("click", onForgotPasswordClick);
 
+  $("#selectRoom1").prop("value", "Start room 1 (" + ROOM1_ANSWER1+ ", " + ROOM1_ANSWER2 + ")")
+  $("#selectRoom2").prop("value", "Start room 2 (" + ROOM2_ANSWER1+ ", " + ROOM2_ANSWER2 + ")")
+  $("#selectRoom1").on("click", onRoom1Selected);
+  $("#selectRoom2").on("click", onRoom2Selected);
+
   $("#video").attr('src', VIDEO_FILE);
+
   fsm.loaded();
 });

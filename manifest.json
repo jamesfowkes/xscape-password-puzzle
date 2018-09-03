@@ -1,6 +1,7 @@
 {
   "name": "Xscape Password Puzzle",
-  "version": "1.0",
+  "short_name": "Password Puzzle",
+  "version": "1.6",
   "manifest_version": 2,
   "app": {
     "background": {
