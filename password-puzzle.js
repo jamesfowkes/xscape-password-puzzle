@@ -1,12 +1,14 @@
 /* Change these values to alter the puzzle */
 
-var QUESTION1 = "Pet's Name: "
-var ANSWER1 = "fido"
+var QUESTION1 = "Favourite Band:"
+var ROOM1_ANSWER1 = "Motorhead"
+var ROOM2_ANSWER1 = "Nirvana"
 
-var QUESTION2 = "Favourite Holiday Destination:"
-var ANSWER2 = "peru"
+var QUESTION2 = "Year of Birth:"
+var ROOM1_ANSWER2 = "1968"
+var ROOM2_ANSWER2 = "1958"
 
-var CLOSE_PASSWORD = "aaa"
+var CLOSE_PASSWORD = "sh3rl0ck"
 
 var INCORRECT_PASSWORD_TIMEOUT = 2000
 var VIDEO_LOOP_TIME = 10000
