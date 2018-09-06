@@ -10,20 +10,55 @@ var ROOM2_ANSWER2 = "1958"
 
 var CLOSE_PASSWORD = "sh3rl0ck"
 
-var INCORRECT_PASSWORD_TIMEOUT = 2000
-var VIDEO_LOOP_TIME = 10000
+var INCORRECT_PASSWORD_TIMEOUT = 2000;
+var PASSWORD_LENGTH = 10;
 
-var PASSWORD_LENGTH = 10
-
-var VIDEO_FILE = "video.mkv"
+var VIDEO_FILE = "video.mp4"
 
 /*******************************************/
-/* DO NOT CHANGE ANYTHING BELOW THIS LINE!**/
+/* DO NOT CHANGE ANYTHING BELOW THIS LINE! */
 /*******************************************/
 
 var incorrectPasswordCount = 0;
 var expected_answer1;
 var expected_answer2;
+
+var local_settings = {
+  "video_timeout": 6 * 60 * 1000
+};
+
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+    return true;
+}
+
+function appSetLocalSetting(key, value, save_to_storage) {
+  local_settings[key] = value;
+  if (save_to_storage) {
+    var to_save = {};
+    to_save[key] = JSON.stringify(value);
+    chrome.storage.local.set(to_save, function() {
+      console.log("Saved " + value + " to " + key)
+    });
+  }
+}
+
+function get_or_set_default(key, default_value, callback) {
+  chrome.storage.local.get(key, function(result) {
+    if (isEmpty(result[key])) {
+      console.log("Setting default " + key + " = " + default_value);
+      appSetLocalSetting(key, default_value, true);
+      callback(default_value);
+    } else {
+      appSetLocalSetting(key, JSON.parse(result[key]), false);
+      console.log("Loaded " + key + " = " + result[key]);
+      callback(result[key]);
+    }
+  });
+}
 
 function showStartup(show) {
   if (show===true) {
@@ -53,7 +88,7 @@ function showQuestion(text) {
 
 function showVideo(show) {
   if (show) {
-    $("#video").show()
+    $("#video").show();
     $("#video").get(0).load();
     $("#video").get(0).play();
   } else {
@@ -223,7 +258,7 @@ function handleQuestionAnswer(entered_answer) {
   }
   else if (fsm.is("screen3") && caseInsensitiveCompare(entered_answer, expected_answer2)) {
     fsm.correctPassphrase();
-    setTimeout(fireFSMTimeout, VIDEO_LOOP_TIME);
+    setTimeout(fireFSMTimeout, local_settings["video_timeout"]);
   }
   else {
     fsm.incorrectPassphrase();
@@ -244,22 +279,29 @@ function onForgotPasswordClick(event) {
 function onRoom1Selected(event) {
   expected_answer1 = ROOM1_ANSWER1;
   expected_answer2 = ROOM1_ANSWER2;
+  appSetLocalSetting("video_timeout", parseInt($("#video_timeout").val()) * 1000, true);
   fsm.roomSelected();
 }
 
 function onRoom2Selected(event) {
   expected_answer1 = ROOM2_ANSWER1;
   expected_answer2 = ROOM2_ANSWER2;
+  appSetLocalSetting("video_timeout", parseInt($("#video_timeout").val()) * 1000, true);
   fsm.roomSelected();
 }
 
 $(document).ready( function() {
+
+  get_or_set_default("video_timeout", 6*60*1000, function(timeout_ms) {
+    $("#video_timeout").val(timeout_ms / 1000);  
+  });
+
   $("#password").on("keyup", onPasswordKeypress);
   $("#question").on("keyup", onQuestionKeypress);
   $("#forgotPasswordPrompt").on("click", onForgotPasswordClick);
 
-  $("#selectRoom1").prop("value", "Start room 1 (" + ROOM1_ANSWER1+ ", " + ROOM1_ANSWER2 + ")")
-  $("#selectRoom2").prop("value", "Start room 2 (" + ROOM2_ANSWER1+ ", " + ROOM2_ANSWER2 + ")")
+  $("#selectRoom1").html("Start room 1 (" + ROOM1_ANSWER1+ ", " + ROOM1_ANSWER2 + ")")
+  $("#selectRoom2").html("Start room 2 (" + ROOM2_ANSWER1+ ", " + ROOM2_ANSWER2 + ")")
   $("#selectRoom1").on("click", onRoom1Selected);
   $("#selectRoom2").on("click", onRoom2Selected);
 

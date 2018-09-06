@@ -1,7 +1,7 @@
 {
   "name": "Xscape Password Puzzle",
   "short_name": "Password Puzzle",
-  "version": "1.6",
+  "version": "1.8",
   "manifest_version": 2,
   "app": {
     "background": {
@@ -10,7 +10,7 @@
     }
   },
   "permissions": [
-    "fullscreen"
+    "fullscreen", "storage"
   ],
   "kiosk_enabled": true,
   "offline_enabled": true

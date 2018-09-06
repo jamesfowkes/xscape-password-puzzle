@@ -8,3 +8,16 @@ body,html {
   bottom: 0px;
   width: 100%;
 }
+
+video {
+  width:100%; 
+  height:100vh;
+}
+
+.btn-space {
+	margin:1em;
+}
+
+.label-space {
+	margin-right:1em;	
+}
